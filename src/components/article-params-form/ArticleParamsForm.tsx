@@ -15,7 +15,7 @@ import {
 } from 'src/constants/articleProps';
 import { RadioGroup } from 'src/ui/radio-group';
 import { Text } from 'src/ui/text';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 interface ArticleParamsFormProps {
 	isOpen: boolean;
@@ -43,6 +43,25 @@ export const ArticleParamsForm = ({
 	const [localContentWidth, setLocalContentWidth] = useState(
 		contentWidthArr[0]
 	);
+	const sidebarRef = useRef<HTMLElement>(null);
+	useEffect(() => {
+		const handleClickOutside = (event: MouseEvent) => {
+			if (
+				sidebarRef.current &&
+				!sidebarRef.current.contains(event.target as Node)
+			) {
+				setIsOpen(false);
+			}
+		};
+		if (isOpen) {
+			document.addEventListener('mousedown', handleClickOutside);
+		} else {
+			document.removeEventListener('mousedown', handleClickOutside);
+		}
+		return () => {
+			document.removeEventListener('mousedown', handleClickOutside);
+		};
+	}, [isOpen, setIsOpen]);
 
 	const handleArrowClick = () => {
 		setIsOpen(!isOpen);
@@ -82,6 +101,7 @@ export const ArticleParamsForm = ({
 		<>
 			<ArrowButton isOpen={isOpen} onClick={handleArrowClick} />
 			<aside
+				ref={sidebarRef}
 				className={clsx(styles.container, { [styles.container_open]: isOpen })}>
 				<form
 					className={styles.form}
