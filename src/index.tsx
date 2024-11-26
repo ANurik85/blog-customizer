@@ -1,5 +1,5 @@
 import { createRoot } from 'react-dom/client';
-import { StrictMode, CSSProperties, useState /* , useCallback */ } from 'react';
+import { StrictMode, CSSProperties, useState } from 'react';
 import clsx from 'clsx';
 
 import { Article } from './components/article/Article';
@@ -18,12 +18,24 @@ const App = () => {
 	const [fontSize, setFontSize] = useState(
 		defaultArticleState.fontSizeOption.value
 	);
+	const [fontFamily, setFontFamily] = useState(
+		defaultArticleState.fontFamilyOption.value
+	);
+	const [fontColor, setFontColor] = useState(
+		defaultArticleState.fontColor.value
+	);
+	const [bgColor, setBgColor] = useState(
+		defaultArticleState.backgroundColor.value
+	);
+	const [contentWidth, setContentWidth] = useState(
+		defaultArticleState.contentWidth.value
+	);
 
 	const handleOutsideClick = (event: React.MouseEvent<HTMLElement>): void => {
 		const main = document.querySelector(`.${styles.main}`);
-		// console.log('closestContainer:', main);
+		console.log('closestContainer:', main);
 		if (main && !main.contains(event.target as Node)) {
-			setIsOpen(true);
+			setIsOpen(false);
 		}
 	};
 	return (
@@ -31,11 +43,11 @@ const App = () => {
 			className={clsx(styles.main)}
 			style={
 				{
-					'--font-family': defaultArticleState.fontFamilyOption.value,
+					'--font-family': fontFamily,
 					'--font-size': fontSize,
-					'--font-color': defaultArticleState.fontColor.value,
-					'--container-width': defaultArticleState.contentWidth.value,
-					'--bg-color': defaultArticleState.backgroundColor.value,
+					'--font-color': fontColor,
+					'--container-width': contentWidth,
+					'--bg-color': bgColor,
 				} as CSSProperties
 			}
 			onClick={handleOutsideClick}>
@@ -43,6 +55,10 @@ const App = () => {
 				isOpen={isOpen}
 				setIsOpen={setIsOpen}
 				setFontSize={setFontSize}
+				setFontFamily={setFontFamily}
+				setFontColor={setFontColor}
+				setBgColor={setBgColor}
+				setContentWidth={setContentWidth}
 			/>
 			<Article />
 		</main>
