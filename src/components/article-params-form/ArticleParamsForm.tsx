@@ -34,13 +34,16 @@ export const ArticleParamsForm = ({
 	setContentWidth,
 }: ArticleParamsFormProps) => {
 	const [isOpen, setIsOpen] = useState(false);
-	const [localFontSize, setLocalFontSize] = useState(fontSizeOptions[0]);
-	const [localFontFamily, setLocalFontFamily] = useState(fontFamilyOptions[0]);
-	const [localFontColor, setLocalFontColor] = useState(fontColors[0]);
-	const [localBgColor, setLocalBgColor] = useState(backgroundColors[0]);
-	const [localContentWidth, setLocalContentWidth] = useState(
-		contentWidthArr[0]
-	);
+	const [formState, setFormState] = useState({
+		fontSize: defaultArticleState.fontSizeOption,
+		fontFamily: defaultArticleState.fontFamilyOption,
+		fontColor: defaultArticleState.fontColor,
+		bgColor: defaultArticleState.backgroundColor,
+		contentWidth: defaultArticleState.contentWidth,
+	});
+	const handleChange = (name: string) => (value: OptionType) => {
+		setFormState((prevState) => ({ ...prevState, [name]: value }));
+	};
 	const sidebarRef = useRef<HTMLElement>(null);
 	useEffect(() => {
 		const handleClickOutside = (event: MouseEvent) => {
@@ -64,37 +67,24 @@ export const ArticleParamsForm = ({
 	const handleArrowClick = () => {
 		setIsOpen(!isOpen);
 	};
-	const handleFontSizeChange = (option: OptionType) => {
-		setLocalFontSize(option);
-	};
-	const handleFontFamilyChange = (option: OptionType) => {
-		setLocalFontFamily(option);
-	};
-	const handleFontColorChange = (option: OptionType) => {
-		setLocalFontColor(option);
-	};
-	const handleBgColorChange = (option: OptionType) => {
-		setLocalBgColor(option);
-	};
-	const handleContentWidthChange = (option: OptionType) => {
-		setLocalContentWidth(option);
-	};
 	const handleSubmit = (event: React.FormEvent) => {
 		event.preventDefault();
-		setFontSize(localFontSize.value);
-		setFontFamily(localFontFamily.value);
-		setFontColor(localFontColor.value);
-		setBgColor(localBgColor.value);
-		setContentWidth(localContentWidth.value);
-		setIsOpen(false);
+		setFontSize(formState.fontSize.value);
+		setFontFamily(formState.fontFamily.value);
+		setFontColor(formState.fontColor.value);
+		setBgColor(formState.bgColor.value);
+		setContentWidth(formState.contentWidth.value);
 	};
 	const handleReset = () => {
-		setLocalFontSize(defaultArticleState.fontSizeOption);
-		setLocalFontFamily(defaultArticleState.fontFamilyOption);
-		setLocalFontColor(defaultArticleState.fontColor);
-		setLocalBgColor(defaultArticleState.backgroundColor);
-		setLocalContentWidth(defaultArticleState.contentWidth);
+		setFormState({
+			fontSize: defaultArticleState.fontSizeOption,
+			fontFamily: defaultArticleState.fontFamilyOption,
+			fontColor: defaultArticleState.fontColor,
+			bgColor: defaultArticleState.backgroundColor,
+			contentWidth: defaultArticleState.contentWidth,
+		});
 	};
+
 	return (
 		<>
 			<ArrowButton isOpen={isOpen} onClick={handleArrowClick} />
@@ -117,36 +107,36 @@ export const ArticleParamsForm = ({
 					</Text>
 
 					<Select
-						selected={localFontFamily}
+						selected={formState.fontFamily}
 						options={fontFamilyOptions}
 						title='Шрифт'
-						onChange={handleFontFamilyChange}
+						onChange={handleChange('fontFamily')}
 					/>
 					<RadioGroup
 						name='radio'
 						title='Размер шрифта'
 						options={fontSizeOptions}
-						selected={localFontSize}
-						onChange={handleFontSizeChange}
+						selected={formState.fontSize}
+						onChange={handleChange('fontSize')}
 					/>
 					<Select
-						selected={localFontColor}
+						selected={formState.fontColor}
 						options={fontColors}
 						title='Цвет шрифта'
-						onChange={handleFontColorChange}
+						onChange={handleChange('fontColor')}
 					/>
 					<Separator />
 					<Select
-						selected={localBgColor}
+						selected={formState.bgColor}
 						options={backgroundColors}
 						title='Цвет фона'
-						onChange={handleBgColorChange}
+						onChange={handleChange('bgColor')}
 					/>
 					<Select
-						selected={localContentWidth}
+						selected={formState.contentWidth}
 						options={contentWidthArr}
 						title='Ширина контента'
-						onChange={handleContentWidthChange}
+						onChange={handleChange('contentWidth')}
 					/>
 					<div className={styles.bottomContainer}>
 						<Button title='Сбросить' htmlType='reset' type='clear' />
