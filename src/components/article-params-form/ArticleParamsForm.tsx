@@ -8,6 +8,7 @@ import { Select } from 'src/ui/select';
 import {
 	backgroundColors,
 	contentWidthArr,
+	defaultArticleState,
 	fontColors,
 	fontFamilyOptions,
 	fontSizeOptions,
@@ -18,8 +19,6 @@ import { Text } from 'src/ui/text';
 import { useEffect, useRef, useState } from 'react';
 
 interface ArticleParamsFormProps {
-	isOpen: boolean;
-	setIsOpen: (isOpen: boolean) => void;
 	setFontSize: (fontSize: string) => void;
 	setFontFamily: (fontFamily: string) => void;
 	setFontColor: (fontColor: string) => void;
@@ -28,14 +27,13 @@ interface ArticleParamsFormProps {
 }
 
 export const ArticleParamsForm = ({
-	isOpen,
-	setIsOpen,
 	setFontSize,
 	setFontFamily,
 	setFontColor,
 	setBgColor,
 	setContentWidth,
 }: ArticleParamsFormProps) => {
+	const [isOpen, setIsOpen] = useState(false);
 	const [localFontSize, setLocalFontSize] = useState(fontSizeOptions[0]);
 	const [localFontFamily, setLocalFontFamily] = useState(fontFamilyOptions[0]);
 	const [localFontColor, setLocalFontColor] = useState(fontColors[0]);
@@ -91,11 +89,11 @@ export const ArticleParamsForm = ({
 		setIsOpen(false);
 	};
 	const handleReset = () => {
-		setLocalFontSize(fontSizeOptions[0]);
-		setLocalFontFamily(fontFamilyOptions[0]);
-		setLocalFontColor(fontColors[0]);
-		setLocalBgColor(backgroundColors[0]);
-		setLocalContentWidth(contentWidthArr[0]);
+		setLocalFontSize(defaultArticleState.fontSizeOption);
+		setLocalFontFamily(defaultArticleState.fontFamilyOption);
+		setLocalFontColor(defaultArticleState.fontColor);
+		setLocalBgColor(defaultArticleState.backgroundColor);
+		setLocalContentWidth(defaultArticleState.contentWidth);
 	};
 	return (
 		<>

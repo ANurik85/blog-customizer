@@ -13,7 +13,6 @@ const domNode = document.getElementById('root') as HTMLDivElement;
 const root = createRoot(domNode);
 
 const App = () => {
-	const [isOpen, setIsOpen] = useState(false);
 	const [fontSize, setFontSize] = useState(
 		defaultArticleState.fontSizeOption.value
 	);
@@ -43,8 +42,6 @@ const App = () => {
 				} as CSSProperties
 			}>
 			<ArticleParamsForm
-				isOpen={isOpen}
-				setIsOpen={setIsOpen}
 				setFontSize={setFontSize}
 				setFontFamily={setFontFamily}
 				setFontColor={setFontColor}
